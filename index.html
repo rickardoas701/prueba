@@ -21,25 +21,6 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
 		<!-- Custom MQTT client for this example ----------------------------------------------->
-
-button type="button" onclick="location.assign('/led1_ON');">
-led1_ON!</button>
-<button type="button" onclick="location.assign('/led1_OFF');">
-led1_OFF!</button>
-<!-- <button type="button" onclick="location.assign('/led1_OFF');">
-led1_OFF!</button> -->
-<button type="button" onclick="location.assign('/led2_ON');">
-led2_ON!</button>
-<button type="button" onclick="location.assign('/led2_OFF');">
-led2_OFF!</button>
-<button type="button" onclick="location.assign('/led3_ON');">
-led3_ON!</button>
-<button type="button" onclick="location.assign('/led3_OFF');">
-led3_OFF!</button>
-<button type="button" onclick="location.assign('/led4_ON');">
-led4_ON!</button>
-<button type="button" onclick="location.assign('/led4_OFF');">
-led4_OFF!</button>
 		
 		<script>
 
@@ -107,7 +88,6 @@ led4_OFF!</button>
   function led() {
     boarId=document.getElementById("boarId").value;
 	userIdId=document.getElementById("userId").value;
-	
     sendMessage(userId+boarId+':led_state:0')
   }
   // called when a message arrives
