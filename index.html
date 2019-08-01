@@ -25,7 +25,7 @@
 		<script>
 
   // Create a client instance
-  //client = new Paho.MQTT.Client("postman.cloudmqtt.com", 14970);
+  //client = new Paho.MQTT.Client("postman.cloudmqtt.com", 32773);
   
   client = new Paho.MQTT.Client("postman.cloudmqtt.com", 31767, "web_" + parseInt(Math.random() * 100, 10));
 
@@ -49,15 +49,12 @@
     console.log("onConnect");
 	
     client.subscribe("/cloudmqtt");
-    message = new Paho.MQTT.Message("estado");
-    message.destinationName = "/cloudmqtt";
-    client.send(message);
-	
+    message = new Paho.MQTT.Message("ll:Hello: CloudMQTT");
+    message.destinationName = "/cloudmqtt";	
   }
 
   function doFail(e){
     console.log(e);
-	
   }
 
   // called when the client loses its connection
@@ -69,16 +66,8 @@
 
   // called when a message arrives
   function onMessageArrived(message) {
-    console.log("onMessageArrived:"+
-	message.payloadString);
-	sensor=document.getElementById('led_state')
-	
-	if(message.payloadString=='led1_encnedido')
-			sensor.innerHTML='encendio';
-			
-	if(message.payloadString=='led1_apagado')
-			sensor.innerHTML='apagado';		
-//	doAction(message.payloadString);:
+    console.log("onMessageArrived:"+message.payloadString);
+	doAction(message.payloadString);
   }
   
     // called when a message arrives
@@ -86,15 +75,13 @@
     message = new Paho.MQTT.Message(msg);
     message.destinationName = "/cloudmqtt";
     client.send(message);
-	
   }
 
     // called when a message arrives
   function led() {
     boarId=document.getElementById("boarId").value;
 	userIdId=document.getElementById("userId").value;
-	
-    sendMessage('led1')
+    sendMessage(userId+boarId+':led_state:0')
   }
   // called when a message arrives
   myName='leo'
