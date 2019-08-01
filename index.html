@@ -11,10 +11,10 @@
 		<textarea style="resize:none; border: none" readonly rows="1" cols="10">Board Id</textarea><br/>
 		<textarea style="resize:none" id='userId' rows="1" cols="10">User</textarea>
 		<textarea  style="resize:none" id='boarId' rows="1" cols="10">rp</textarea><br/>
-		<button id="led" onclick="led()">ldr</button>
+		<button id="led" onclick="led()">led</button>
 		<h1 id="led_state">off</h1>
 		<h1>sensor</h1>
-		<h1 id="sensor_val">10</h1>
+		<h1 id="sensor_val">0</h1>
 		<!-- mosquitto MQTT -------------------------------------------------------------------->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
 		<!-- jQuery ---------------------------------------------------------------------------->
@@ -27,15 +27,15 @@
   // Create a client instance
   //client = new Paho.MQTT.Client("postman.cloudmqtt.com", 14970);
   
-  client = new Paho.MQTT.Client("postman.cloudmqtt.com",31767, "web_" + parseInt(Math.random() * 100, 10));
+  client = new Paho.MQTT.Client("postman.cloudmqtt.com", 31767, "web_" + parseInt(Math.random() * 100, 10));
 
   // set callback handlers
   client.onConnectionLost = onConnectionLost;
   client.onMessageArrived = onMessageArrived;
   var options = {
     useSSL: true,
-    userName: "	vhqfqhrz",
-    password: "q6EAAJdpjZ78",
+    userName: "vhqfqhrz",
+    password: "GE7aXy_Dcg0y",
     onSuccess:onConnect,
     onFailure:doFail
   }
@@ -48,9 +48,11 @@
     // Once a connection has been made, make a subscription and send a message.
     console.log("onConnect");
 	
-    client.subscribe("/cloudmqttx");
-    message = new Paho.MQTT.Message("ll:Hello: CloudMQTT");
-    message.destinationName = "/cloudmqtty";
+    client.subscribe("/cloudmqtt");
+    message = new Paho.MQTT.Message("estado");
+    message.destinationName = "/cloudmqtt";
+    client.send(message);
+	
   }
 
   function doFail(e){
@@ -67,27 +69,32 @@
 
   // called when a message arrives
   function onMessageArrived(message) {
-    console.log("onMessageArrived:"+message.payloadString);
-	sensor=document.getElementById('sensor_val');
-	sensor.innerHTML=message.payloadString
-	doAction(message.payloadString);
+    console.log("onMessageArrived:"+
+	message.payloadString);
+	sensor=document.getElementById('led_state')
+	
+	if(message.payloadString=='led1_encnedido')
+			sensor.innerHTML='encendio';
+			
+	if(message.payloadString=='led1_apagado')
+			sensor.innerHTML='apagado';		
+//	doAction(message.payloadString);:
   }
   
     // called when a message arrives
   function sendMessage(msg) {
     message = new Paho.MQTT.Message(msg);
-    message.destinationName = "/cloudmqtty";
+    message.destinationName = "/cloudmqtt";
     client.send(message);
 	
   }
 
     // called when a message arrives
   function led() {
-    //boarId=document.getElementById("boarId").value;
-	//userIdId=document.getElementById("userId").value;
+    boarId=document.getElementById("boarId").value;
+	userIdId=document.getElementById("userId").value;
 	
-    //sendMessage(userId+boarId+':led_state:0')
-	sendMessage('ldr')
+    sendMessage('led1')
   }
   // called when a message arrives
   myName='leo'
